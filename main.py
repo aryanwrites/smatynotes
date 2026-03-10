@@ -47,13 +47,14 @@ def clear_history():
 
 # ---- MODEL ----
 @st.cache_resource
+@st.cache_resource
 def init_model():
     llm = HuggingFaceEndpoint(
         repo_id="Qwen/Qwen2.5-7B-Instruct",
         temperature=0.7,
-        huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_API_TOKEN")
+        huggingfacehub_api_token=st.secrets["HUGGINGFACEHUB_API_TOKEN"]  # ← use st.secrets
     )
-    return ChatHuggingFace(llm=llm)  # return the model
+    return ChatHuggingFace(llm=llm)
 
 model = init_model()
 
