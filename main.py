@@ -1,6 +1,7 @@
 import streamlit as st
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_huggingface import HuggingFaceEndpoint, ChatHuggingFace
 from langchain_core.messages import HumanMessage, AIMessage
 from dotenv import load_dotenv
 import firebase_admin
@@ -47,7 +48,12 @@ def clear_history():
 # ---- MODEL ----
 @st.cache_resource
 def init_model():
-    return ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+    llm = HuggingFaceEndpoint(
+        repo_id="Qwen/Qwen2.5-7B-Instruct",
+        temperature=0.7,
+        huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_API_TOKEN")
+    )
+    return ChatHuggingFace(llm=llm)  # return the model
 
 model = init_model()
 
