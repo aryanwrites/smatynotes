@@ -14,7 +14,9 @@ load_dotenv()
 @st.cache_resource
 def init_firebase():
     if not firebase_admin._apps:
-        cred = credentials.Certificate(os.getenv("FIREBASE_KEY_PATH"))
+        import json
+        key_json = os.getenv("FIREBASE_KEY_JSON")
+        cred = credentials.Certificate(json.loads(key_json))
         firebase_admin.initialize_app(cred)
     return firestore.client()
 
