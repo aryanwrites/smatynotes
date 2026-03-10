@@ -16,7 +16,8 @@ def init_firebase():
     if not firebase_admin._apps:
         import json
         key_json = os.getenv("FIREBASE_KEY_JSON")
-        cred = credentials.Certificate(json.loads(key_json))
+        key_dict = json.loads(key_json.replace("\\n", "\n"))  # fix newlines
+        cred = credentials.Certificate(key_dict)
         firebase_admin.initialize_app(cred)
     return firestore.client()
 
